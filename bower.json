@@ -1,0 +1,20 @@
+{
+  "name": "angularjs_employee",
+  "description": "angularjs版本的仿拉钩网的webapp",
+  "main": "index.js",
+  "authors": [
+    "roastwind"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "angularjs"
+  ],
+  "homepage": "https://github.com/muzi131313/angularjs_employee",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
