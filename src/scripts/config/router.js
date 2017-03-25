@@ -1,8 +1,5 @@
 'use strict'
 
-angular.module('app', ['ui.router']);
-'use strict'
-
 angular.module('app').config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
 	$stateProvider.state('main', {
 		url: '/main',
@@ -11,8 +8,3 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', function (
 	})
 	$urlRouterProvider.otherwise('main');
 }]);
-var CityService = {
-	init: function () {
-		console.log('CityService');
-	}
-}

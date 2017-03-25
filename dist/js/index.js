@@ -1,1 +1,1 @@
-var CityService={init:function(){console.log("CityService")}};
+"use strict";angular.module("app",["ui.router"]),angular.module("app").config(["$stateProvider","$urlRouterProvider",function(e,i){e.state("main",{url:"/main",templateUrl:"view/main.html",controller:"mainCtrl"}),i.otherwise("main")}]);var CityService={init:function(){console.log("CityService")}};
