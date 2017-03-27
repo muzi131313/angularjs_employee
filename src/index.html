@@ -4,11 +4,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 	<title>index</title>
+	<link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
 	<div ui-view>
 		
 	</div>
+	<script type="text/javascript">
+		document.getElementsByTagName('html')[0].style.fontSize = window.screen.width / 10 + 'px'; 
+	</script>
 	<script type="text/javascript" src="vender/angular/angular.min.js"></script>
 	<script type="text/javascript" src="vender/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
