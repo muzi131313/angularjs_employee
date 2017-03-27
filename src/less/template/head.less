@@ -1,2 +1,23 @@
 @import url(../varaiable.less);
+@import url(../property.less);
+
+.head{
+	background-color: @headerBgColor;
+	.h(40);
+	.hl(40);
+	padding: 0 7px;
+	.text{
+		color: @defaultColor;
+	}
+	.custom{
+		background-color:  @warnColor;
+		color: @defaultColor;
+		border-color: @warnColor;
+		border-style: dashed;
+		float: right;
+		.mt(10);
+		.pl(25);
+		.pr(25);
+	}
+}
 
