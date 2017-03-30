@@ -7,6 +7,30 @@
 .clear {
   clear: both;
 }
+.d-ib {
+  display: inline-block;
+}
+.d-b {
+  display: block;
+}
+.ta-l {
+  text-align: left;
+}
+.ta-c {
+  text-align: center;
+}
+.ta-r {
+  text-align: right;
+}
+.va-t {
+  vertical-align: top;
+}
+.va-m {
+  vertical-align: middle;
+}
+.va-b {
+  vertical-align: bottom;
+}
 .head {
   background-color: #12d5b5;
   height: 1.06666667rem;
@@ -22,9 +46,45 @@
   border-color: #feae11;
   border-style: dashed;
   float: right;
-  margin-top: 0.25974026rem;
-  padding-left: 0.64935065rem;
-  padding-right: 0.64935065rem;
+  margin-top: 0.26666667rem;
+  padding-left: 0.66666667rem;
+  padding-right: 0.66666667rem;
+}
+.footer {
+  border-top: #d4d4d4;
+  padding: 0;
+  margin: 0;
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+  line-height: 40px;
+  left: 0;
+  right: 0;
+  font-size: 0;
+}
+.footer li {
+  font-size: 20px;
+  width: 33%;
+  color: #9f9e9e;
+}
+.footer li.select {
+  background-color: #dbf9f4;
+  color: #01c2a3;
+}
+.footer .icon-document {
+  background: url(../image/document.png) no-repeat center center;
+  width: 25px;
+  height: 25px;
+}
+.footer .icon-search {
+  background: url(../image/search.png) no-repeat center center;
+  width: 25px;
+  height: 25px;
+}
+.footer .icon-my {
+  background: url(../image/my.png) no-repeat center center;
+  width: 25px;
+  height: 25px;
 }
 * {
   padding: 0;
