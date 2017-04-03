@@ -1,3 +1,6 @@
+.bg-w {
+  background-color: #fff;
+}
 .f-r {
   float: right;
 }
@@ -86,6 +89,27 @@
   width: 25px;
   height: 25px;
 }
+.position-list {
+  margin: 0;
+  padding: 0;
+}
+.position-list .item {
+  margin: 0 0;
+  padding: 7px 3px;
+  list-style: none;
+  border-bottom: 1px solid #ddd;
+}
+.position-list .item .logo {
+  width: 1.73333333rem;
+  height: 1.73333333rem;
+  margin-right: 13px;
+}
+.position-list .item .title {
+  margin: 0;
+}
+.position-list .item .desc {
+  margin: 0;
+}
 * {
   padding: 0;
   margin: 0;
@@ -97,4 +121,8 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
+}
+body {
+  font-size: 0.42666667rem;
+  background-color: #eee;
 }

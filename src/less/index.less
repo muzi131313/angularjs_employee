@@ -1,5 +1,6 @@
 @import url(./template/head.less);
 @import url(./template/footer.less);
+@import url(./template/positionList.less);
 
 
 .fx(@px) {
@@ -55,4 +56,9 @@ html,body{
 	width: 100%;
 	margin: 0;
 	padding: 0;
+}
+
+body{
+	.fx(16);
+	background-color: @bodyBgColor;
 }
