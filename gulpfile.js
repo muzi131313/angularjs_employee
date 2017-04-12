@@ -84,13 +84,14 @@ gulp.task('serve', function () {
 		livereload: true, 	// 自动刷新
 		port: 1234,
 
-	})
+	});
 	open('http://localhost:1234/index.html');
 
 	gulp.watch('bower_components/**/*', ['lib']);
 	gulp.watch(app.srcPath+'**/*.html', ['html']);
 	gulp.watch(app.srcPath+'data/*.json', ['json']);
 	gulp.watch(app.srcPath+'less/*.less', ['less']);
+	gulp.watch(app.srcPath+'less/**/*.less', ['less']);
 	gulp.watch(app.srcPath+'scripts/**/*.js', ['js']);
 	gulp.watch(app.srcPath+'image/**/*', ['image']);
 });

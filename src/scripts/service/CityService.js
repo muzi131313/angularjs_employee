@@ -1,5 +1,10 @@
-var CityService = {
-	init: function () {
-		console.log('CityService');
-	}
-}
+(function () {
+	'use strict';
+	
+	var CityService = {
+		init: function () {
+			console.log('CityService');
+		}
+	};
+	
+})();

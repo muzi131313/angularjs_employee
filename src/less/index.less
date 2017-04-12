@@ -1,49 +1,11 @@
 @import url(./template/head.less);
 @import url(./template/footer.less);
 @import url(./template/positionList.less);
+@import url(./common/mixin.less);
+@import url(./common/property.less);
+@import url(./common/varaiable.less);
 
-
-.fx(@px) {
-	font-size: unit(@px / 37.5, rem) ;
-}
-
-.w(@px) {
-	width: unit(@px / 37.5, rem) ;
-}
-
-.h(@px) {
-	height: unit(@px / 37.5, rem) ;
-}
-
-.hl(@px){
-	line-height: unit(@px / 37.5, rem) ;
-}
-
-.mt(@px){
-	margin-top: unit(@px / 37.5, rem)
-}
-.ml(@px){
-	margin-left: unit(@px / 37.5, rem)
-}
-.mb(@px){
-	margin-bottom: unit(@px / 37.5, rem)
-}
-.mr(@px){
-	margin-right: unit(@px / 37.5, rem)
-}
-
-.pt(@px){
-	padding-top: unit(@px / 37.5, rem)
-}
-.pl(@px){
-	padding-left: unit(@px / 37.5, rem)
-}
-.pb(@px){
-	padding-bottom: unit(@px / 37.5, rem)
-}
-.pr(@px){
-	padding-right: unit(@px / 37.5, rem)
-}
+@import url(./position.less);
 
 *{
 	padding: 0;
@@ -61,4 +23,8 @@ html,body{
 body{
 	.fx(16);
 	background-color: @bodyBgColor;
+}
+
+button{
+	outline-width: 0;
 }
