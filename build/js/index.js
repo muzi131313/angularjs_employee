@@ -164,10 +164,10 @@
 			replace: true,
 			templateUrl: 'view/job/positionInfo.html',
 			scope: {
-				data: '='
+				isActive: '='
 			},
 			link: function (scope, iElement, iAttrs) {
-				
+				scope.imgPath = 'image/star'+(scope.isActive ? 'active' : '')+'.png';
 			}
 		};
 	}]);

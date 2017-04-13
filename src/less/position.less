@@ -1,7 +1,10 @@
 @import url(./common/mixin.less);
 @import url(./common/varaiable.less);
-// @import url(./common/property.less);
 
+@import url(./job/positionInfo.less);
+@import url(./job/company.less);
+
+/** 简历投递按钮 */
 .bottom-btn{
 	position: fixed;
 	.h(40);
@@ -10,4 +13,19 @@
 	color: @defaultColor;
 	border-width: 0;
 	background-color: @headerBgColor;
+}
+
+.job{
+	margin-top: 10px;
+	.title{
+		.fz(16);
+		padding-left: 10px;
+		border-bottom: 1px solid @borderGrayColor;
+		.h(40);
+		.lh(40);
+	}
+	.desc{
+		padding: 10px 0 10px 10px;
+		margin-left: 0;
+	}	
 }
