@@ -1,11 +1,19 @@
 @import url(./template/head.less);
 @import url(./template/footer.less);
 @import url(./template/positionList.less);
+
+/** common */
 @import url(./common/mixin.less);
 @import url(./common/property.less);
 @import url(./common/varaiable.less);
 
 @import url(./position.less);
+
+/** job */
+@import url(./job/company.less);
+@import url(./job/positionClaz.less);
+@import url(./job/positionInfo.less);
+
 
 *{
 	padding: 0;
@@ -25,6 +33,24 @@ body{
 	background-color: @bodyBgColor;
 }
 
+@media screen and(min-width: 1024px) {
+    html,body{
+        position: relative; 
+        width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .footer{
+    	max-width: 640px;
+    	margin: 0 auto;
+    }
+}
+
 button{
 	outline-width: 0;
+	border-width: 0;
+}
+
+ul{
+	list-style-type: none;
 }

@@ -8,10 +8,17 @@
 			replace: true,
 			templateUrl: 'view/template/headBar.html',
 			scope: {
-				text: '@'
+				title: '@'
 			},
 			link: function (scope, iElement, iAttrs) {
+				scope.back = function () {
+					window.history.back();	
+				};
 				
+				scope.$on('to-child', function (event, data) {
+					console.log('to-child', event, data);
+				});
+				scope.$emit('to-parent', {show: 'hai'});
 			}
 		};
 	}]);

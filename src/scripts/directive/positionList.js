@@ -12,9 +12,7 @@
 				data: '='
 			},
 			link: function (scope, iElement, iAttrs) {
-				scope.back = function () {
-					window.history.back();	
-				};
+				
 			}
 		};
 	}]);

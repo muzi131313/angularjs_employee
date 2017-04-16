@@ -41,6 +41,7 @@ gulp.task('json', function () {
 
 gulp.task('less', function () {
 	gulp.src(app.srcPath + 'less/*.less')
+	.pipe($.plumber())
 	.pipe($.less())
 	.pipe(gulp.dest(app.devPath + 'css'))
 	.pipe($.cssmin({
@@ -56,6 +57,7 @@ gulp.task('less', function () {
 
 gulp.task('js', function () {
 	gulp.src(app.srcPath + 'scripts/**/*.js')
+	.pipe($.plumber())
 	.pipe($.concat('index.js'))
 	.pipe(gulp.dest(app.devPath + 'js'))
 	.pipe($.uglify())
@@ -65,6 +67,7 @@ gulp.task('js', function () {
 
 gulp.task('image', function () {
 	gulp.src(app.srcPath + 'image/**/*')
+	.pipe($.plumber())
 	.pipe(gulp.dest(app.devPath + 'image'))
 	.pipe($.imagemin())
 	.pipe(gulp.dest(app.prdPath + 'image'))

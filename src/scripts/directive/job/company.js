@@ -8,7 +8,7 @@
 			replace: true,
 			templateUrl: 'view/job/company.html',
 			scope: {
-				data: '='
+				company: '='
 			},
 			link: function (scope, iElement, iAttrs) {
 				

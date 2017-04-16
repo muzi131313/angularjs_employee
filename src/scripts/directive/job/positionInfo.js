@@ -8,7 +8,9 @@
 			replace: true,
 			templateUrl: 'view/job/positionInfo.html',
 			scope: {
-				isActive: '='
+				isActive: '=',
+				isLogin: '=',
+				position: '='
 			},
 			link: function (scope, iElement, iAttrs) {
 				scope.imgPath = 'image/star'+(scope.isActive ? 'active' : '')+'.png';

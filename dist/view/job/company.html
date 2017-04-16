@@ -1,1 +1,1 @@
-<div class="bg-w company-info p-r"><img src="image/company-1.png" alt="" class="p-a logo"><p>慕课网</p><p>移动互联网/A轮/50-150人</p></div>
+<div class="bg-w company-info p-r" ui-sref="company({id: company.id})"><img ng-src="{{company.imageUrl}}" alt="" class="p-a logo"><p ng-bind="company.name">慕课网</p><p ng-bind="company.industry + '/' + company.state + '/' + company.people">移动互联网/A轮/50-150人</p></div>

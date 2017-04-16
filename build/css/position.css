@@ -1,27 +1,3 @@
-/** 职位信息 */
-.position-info {
-  border-bottom: 1px solid #ccc;
-  padding: 26px 10px 18px 10px;
-}
-.position-info .ml {
-  margin-left: 20px;
-}
-.position-info .star {
-  right: 24px;
-  top: 40px;
-}
-.company-info {
-  padding: 20px 15px 13px 85px;
-}
-.company-info .logo {
-  width: 1.6rem;
-  height: 1.6rem;
-  left: 15px;
-  bottom: 10px;
-}
-.company-info p {
-  padding-top: 0;
-}
 /** 简历投递按钮 */
 .bottom-btn {
   position: fixed;

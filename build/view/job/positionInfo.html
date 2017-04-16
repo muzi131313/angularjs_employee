@@ -1,13 +1,13 @@
 <div class="bg-w position-info p-r">
 	<p>
-		<span class="">销售</span>
-		<span class="ml c-r">3~5k</span>
+		<span class="" ng-bind="position.name">销售</span>
+		<span class="ml c-r" ng-bind="position.salaryName">3~5k</span>
 	</p>
 	<p>
-		<span class="">上海</span>
-		<span class="ml">1~3年</span>
-		<span class="ml">专科</span>
+		<span class="" ng-bind="position.cityName">上海</span>
+		<span class="ml" ng-bind="position.experience">1~3年</span>
+		<span class="ml" ng-bind="position.education">专科</span>
 	</p>
-	<p>成长空间大</p>
-	<img ng-src="{{imgPath}}" alt="" class="p-a star">
+	<p ng-bind="position.benefit">成长空间大</p>
+	<img ng-show="isLogin" ng-src="{{imgPath}}" alt="" class="p-a star">
 </div>

@@ -11,11 +11,12 @@
 	-->
 	<!-- 修改scope,暴露data接口,降低模板和控制器之间的耦合-->
 	<li ui-sref="position({id: job.id})" class="item" ng-repeat="job in data">
-		<img alt="" class="logo f-l" ng-src="{{job.imgSrc}}">
-		<h3 class="title" ng-bind="job.name">WEB前端</h3>
-		<p class="desc" ng-bind="job.companyName+'['+job.city+']'+job.industry">
+		<img alt="" class="logo f-l" ng-src="{{job.imageUrl}}">
+		<h3 class="title" ng-bind="job.job">WEB前端</h3>
+		<p class="desc" ng-bind="job.companyName+'['+job.cityName+']'+job.industryName">
 			慕课网[北京]互联网
 		</p>
-		<p class="desc" ng-bind="job.time">2017-04-03 10:09:08</p>
+		<p class="desc" ng-bind="job.date">2017-04-03 10:09:08</p>
+		<div class="clear"></div>
 	</li>
 </ul>

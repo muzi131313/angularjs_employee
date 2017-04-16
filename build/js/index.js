@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 	
-	angular.module('app', ['ui.router']);
+	angular.module('app', ['ui.router', 'ngCookies']);
 })();
 (function () {
 	'use strict';
@@ -15,46 +15,20 @@
 			url: '/position/:id',
 			templateUrl: 'view/position.html',
 			controller: 'positionCtrl'
+		}).state('company', {
+			url: '/company/:id',
+			templateUrl: 'view/company.html',
+			controller: 'companyCtrl'
+		}).state('search', {
+			url: '/search',
+			templateUrl: 'view/search.html',
+			controller: 'searchCtrl'
+		}).state('my', {
+			url: '/my',
+			templateUrl: 'view/my.html',
+			controller: 'myCtrl'
 		});
 		$urlRouterProvider.otherwise('main');
-	}]);
-})();
-(function () {
-	'use strict';
-
-	angular.module('app').controller('mainCtrl', ['$scope', function ($scope) {
-		$scope.jobList = [{
-			id: 1,
-			name: 'WEB前端',
-			imgSrc: 'image/company-1.png',
-			companyName: '慕课网',
-			city: '北京',
-			industry: '互联网',
-			time: '2017-04-03 10:09:08'
-		}, {
-			id: 2,
-			name: '阿语SEM工程师',
-			imgSrc: 'image/company-2.png',
-			companyName: '六一集团有限公司',
-			city: '北京',
-			industry: '互联网',
-			time: '2017-04-03 10:08:27'
-		}, {
-			id: 3,
-			name: '产品经理',
-			imgSrc: 'image/company-3.png',
-			companyName: '千度',
-			city: '广州',
-			industry: '互联网',
-			time: '2017-04-03 10:08:32'
-		}];
-	}]);
-})();
-(function () {
-	'use strict';
-	
-	angular.module('app').controller('positionCtrl', ['$scope', function ($scope) {
-		console.log('positionCtrl..');
 	}]);
 })();
 (function () {
@@ -97,10 +71,17 @@
 			replace: true,
 			templateUrl: 'view/template/headBar.html',
 			scope: {
-				text: '@'
+				title: '@'
 			},
 			link: function (scope, iElement, iAttrs) {
+				scope.back = function () {
+					window.history.back();	
+				};
 				
+				scope.$on('to-child', function (event, data) {
+					console.log('to-child', event, data);
+				});
+				scope.$emit('to-parent', {show: 'hai'});
 			}
 		};
 	}]);
@@ -119,9 +100,7 @@
 				data: '='
 			},
 			link: function (scope, iElement, iAttrs) {
-				scope.back = function () {
-					window.history.back();	
-				};
+				
 			}
 		};
 	}]);
@@ -129,12 +108,142 @@
 (function () {
 	'use strict';
 	
-	var CityService = {
-		init: function () {
-			console.log('CityService');
-		}
-	};
+	angular.module('app').controller('companyCtrl', ['$scope', '$http', '$state', function ($scope, $http, $state) {
+		
+		var companyId = $state.params.id;
+
+		$http({
+			method: 'GET',
+  			url: '/data/company.json',
+  			params: {
+  				companyId: companyId
+  			}
+		}).then(function (resp) {
+			$scope.company = resp.data;
+
+			$scope.$broadcast('to-child', {word: 'world!'});
+
+		}, function (resp) {
+			
+		});
+
+		$scope.$on('to-parent', function (event, data) {
+			console.log('to-parent', event, data);
+		});
+	}]);
+})();
+(function () {
+	'use strict';
+
+	angular.module('app').controller('mainCtrl', ['$scope', '$http', function ($scope, $http) {
+		$http({
+			method: 'GET',
+  			url: '/data/positionList.json'
+		}).then(function (resp) {
+			$scope.jobList = resp.data;
+		}, function (resp) {
+			
+		});
+	}]);
+})();
+(function () {
+	'use strict';
 	
+	angular.module('app').controller('myCtrl', ['$scope', '$http', '$state', function ($scope, $http, $state) {
+		
+	}]);
+})();
+(function () {
+	'use strict';
+	
+	angular.module('app').controller('positionCtrl', ['$scope', '$http', '$state', '$q', 'cache', function ($scope, $http, $state, $q, cache) {
+
+		var positionId = $state.params.id;
+
+		$scope.isLogin = false;
+		$scope.isActive = false;
+
+		cache.put('key', 'day');
+
+		// position
+		function getPosition() {
+			var def = $q.defer();
+			$http({
+				method: 'GET',
+				url: '/data/position.json',
+				params: {
+					positionId: positionId
+				}
+			}).then(function (resp) {
+				$scope.position = resp.data;
+				def.resolve(resp);
+			}, function (err) {
+				def.reject(err);
+			});
+			return def.promise;
+		}
+
+		// company
+		function getCompany(companyId) {
+			var def = $q.defer();
+			$http({
+				method: 'GET',
+	  			url: '/data/company.json',
+	  			params: {
+	  				companyId: companyId
+	  			}
+			}).then(function (resp) {
+				$scope.company = resp.data;
+				def.resolve(resp);
+			}, function (err) {
+				def.reject(err);
+			});
+			return def.promise;
+		}
+
+		getPosition().then(function (data) {
+			getCompany(data.data.companyId);
+		});
+	}]);
+})();
+(function () {
+	'use strict';
+	
+	angular.module('app').controller('searchCtrl', ['$scope', '$http', '$state', function ($scope, $http, $state) {
+		
+	}]);
+})();
+(function () {
+	'use strict';
+	
+	// servie模式
+	// angular.module('app').service('cache', ['$cookies', function ($cookies) {
+	// 	this.put = function (key, value) {
+	// 		$cookies.put(key, value);	
+	// 	};
+	// 	this.get = function (key) {
+	// 		return $cookies.get(key);
+	// 	};
+	// 	this.remove = function (key) {
+	// 		$cookies.remove(key);
+	// 	};
+	// }]);
+	
+	// 工厂模式
+	angular.module('app').factory('cache', ['$cookies', function ($cookies) {
+		return {
+			put: function (key, value) {
+				$cookies.put(key, value);
+			},
+			get: function (key) {
+				return $cookies.get(key);
+			},
+			remove: function (key) {
+				$cookies.remove(key);
+			}
+		};
+	}]);
+
 })();
 (function () {
 	'use strict';
@@ -146,10 +255,40 @@
 			replace: true,
 			templateUrl: 'view/job/company.html',
 			scope: {
-				data: '='
+				company: '='
 			},
 			link: function (scope, iElement, iAttrs) {
 				
+			}
+		};
+	}]);
+})();
+(function () {
+	'use strict';
+
+	// appHead,在html中对应app-position-claz
+	angular.module('app').directive('appPositionClaz', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/job/positionClaz.html',
+			scope: {
+				clazes: '='
+			},
+			link: function (scope, iElement, iAttrs) {
+				var self = this;
+				scope.showCategory = function (index) {
+					self.pos(scope, index);
+				};
+				scope.$watch('clazes', function (newVal, oldVal, _scope) {
+					if(newVal){
+						scope.showCategory(0);
+					}
+				});
+			},
+			pos: function (scope, index) {
+				scope.positionList = scope.clazes.positionClass[index].positionList;
+				scope.isActive = index;
 			}
 		};
 	}]);
@@ -164,7 +303,9 @@
 			replace: true,
 			templateUrl: 'view/job/positionInfo.html',
 			scope: {
-				isActive: '='
+				isActive: '=',
+				isLogin: '=',
+				position: '='
 			},
 			link: function (scope, iElement, iAttrs) {
 				scope.imgPath = 'image/star'+(scope.isActive ? 'active' : '')+'.png';

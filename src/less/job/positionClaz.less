@@ -1,0 +1,37 @@
+@import url(../common/varaiable.less);
+
+.position-claz{
+	background-color: @defaultColor;
+	border-top: 1px solid @lineColor;
+	padding: 13px 9px 5px 9px;
+	.job-title{
+		padding: 0 0 35px 0;
+	}
+	.category{
+		background-color: @btnColor;
+		border-radius: 20px;
+		padding: 10px 23px;
+		margin-right: 11px;
+		&.active{
+			background-color: @headerBgColor;
+			color: @defaultColor;
+		}
+	}
+	.job-list{
+		border-top: 1px solid @lineColor;
+		margin: 5px 0 0 0;
+		padding: 0;
+		.salary{
+			color: @dangerColor;
+			right: 10px;
+			top: 15px;
+		}
+		.job-item{
+			padding: 10px 0;
+		}
+		.job-info{
+			height: 26px;
+			line-height: 26px;
+		}
+	}
+}
