@@ -1,5 +1,5 @@
-@import url(./common/mixin.less);
-@import url(./common/varaiable.less);
+@import url(../common/mixin.less);
+@import url(../common/varaiable.less);
 
 /** 简历投递按钮 */
 .bottom-btn{
@@ -7,15 +7,18 @@
 	.h(40);
 	width: 100%;
 	.b(0);
+	.l(0);
+	.r(0);
 	color: @defaultColor;
 	border-width: 0;
 	background-color: @headerBgColor;
 }
 
+/** 工作列表 */
 .job{
 	margin-top: 10px;
 	.title{
-		.fz(16);
+		.fs(16);
 		padding-left: 10px;
 		border-bottom: 1px solid @borderGrayColor;
 		.h(40);

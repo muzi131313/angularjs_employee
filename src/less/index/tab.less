@@ -1,0 +1,21 @@
+@import url(../common/varaiable.less);
+@import url(../common/mixin.less);
+
+.tab{
+	position: fixed;
+	top: 40px;
+	left: 0;
+	right: 0;
+	background-color: @tabBgColor;
+	font-size: 0; /** 消除inline-block默认边距问题*/
+	.tab-item{
+		.fs(14);
+		height: 40px;
+		line-height: 40px;
+		width: 33.33%;
+		text-align: center;
+		&.active{
+			border-bottom: 2px solid @headerBgColor;
+		}
+	}
+}

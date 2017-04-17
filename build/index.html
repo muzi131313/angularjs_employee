@@ -11,10 +11,30 @@
 		
 	</div>
 	<script type="text/javascript">
-		function resize() {
-			document.getElementsByTagName('html')[0].style.fontSize = window.screen.width / 10 + 'px';
+		/**
+		 * [isMobile 判断是否是手机
+		 * copy from: https://github.com/finfinity/client.navigator.useragent ]
+		 * @return {Boolean} []
+		 */
+		function isMobile() {
+			var client_info = navigator.userAgent.toLowerCase();
+			return !!client_info.match(/ipad|iphone|android|blackberry|windows phone|webos/i);
 		}
-		resize();
+		
+		function resize() {
+			if(isMobile()){
+				document.getElementsByTagName('html')[0].style.fontSize = window.screen.width / 10 + 'px';
+				document.getElementsByTagName('html')[0].className = '';
+				document.getElementsByTagName('body')[0].className = '';
+			}else{
+				document.getElementsByTagName('html')[0].style.fontSize = '';
+				document.getElementsByTagName('html')[0].className = 'pc';
+				document.getElementsByTagName('body')[0].className = 'pc';	
+			}
+		}
+		if(isMobile()){
+			resize();
+		}
 		window.onresize = resize;
 	</script>
 	<script type="text/javascript" src="vender/angular/angular.min.js"></script>

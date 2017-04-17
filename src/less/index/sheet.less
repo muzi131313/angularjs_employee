@@ -1,0 +1,39 @@
+@import url(../common/varaiable.less);
+@import url(../common/mixin.less);
+
+.sheet{
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .2);
+	z-index: 99;
+	.sheet-wrap{
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 100;
+		padding: 8px;
+		.sheet-items{
+			max-height: 500px;
+			overflow-y: scroll;
+			border-radius: 5px;
+			margin-bottom: 8px;
+			.sheet-btn{
+				border-bottom: 1px solid @lineColor;
+			}
+		}
+		.sheet-btn,.sheet-cancel{
+			.h(50);
+			.lh(50);
+			.fs(16);
+			width: 100%;
+			background-color: @sheetBgColor;
+			color: @sheetColor;
+		}
+	}
+}

@@ -6,6 +6,107 @@
 (function () {
 	'use strict';
 
+	// value: 创建全局变量
+	angular.module('app').value('dict', {}).run(['$http', 'dict', function ($http, dict) {
+		
+		// 城市
+		$http({
+			method: 'GET',
+  			url: '/data/city.json'
+		}).then(function (resp) {
+			dict.city = resp;
+		}, function (resp) {
+			
+		});
+
+		// 薪资
+		$http({
+			method: 'GET',
+  			url: '/data/salary.json'
+		}).then(function (resp) {
+			dict.salary = resp;
+		}, function (resp) {
+			
+		});
+
+		// 范围
+		$http({
+			method: 'GET',
+  			url: '/data/scale.json'
+		}).then(function (resp) {
+			dict.scale = resp;
+		}, function (resp) {
+			
+		});
+
+		// tab标题
+		dict.searchTabs = [{
+			id: 'city', 
+			name: '城市'
+		}, {
+			id: 'salary',
+			name: '薪资'
+		}, {
+			id: 'scale',
+			name: '公司规模'
+		}];
+	}]);
+})();
+(function(){
+	'use strict';
+
+	/**
+	 * copy from: https://github.com/ShuyunXIANFESchool/FE-problem-collection/issues/21
+	 
+	// 注意注入的时候，加上Provider后缀
+	angular.module('app').config(function(messageProvider) {
+	     messageProvider.setLevel('error');
+	});
+
+	//注入的时候，无需加后缀
+	angular.module('app').controller('MainCtrl', function(message) {
+	     message.error('just a test');
+	});
+
+	 */
+	angular.module('app').provider('message', message.bind(message));
+	function message() {
+        var level = 'log';
+    }
+    // 该方法可以在 config 阶段使用
+    message.prototype.setLevel = function (level) {
+    	level = level;
+    };
+    // 该方法返回的对象方法可以在 run 阶段使用
+    message.prototype.$get = function () {
+    	return {
+            log: function() {
+                if(level ===  'log'){
+                	console.log(arguments);
+                }else{
+					angular.noop();
+                }
+            },
+            error: function() {
+            	if(level ===  'error'){
+                	console.error(arguments);
+                }else{
+					angular.noop();
+                }
+            },
+            warn: function() {
+            	if(level ===  'error'){
+                	console.warn(arguments);
+                }else{
+					angular.noop();
+                }
+            }
+        };
+    };
+})();
+(function () {
+	'use strict';
+
 	angular.module('app').config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
 		$stateProvider.state('main', {
 			url: '/main',
@@ -29,80 +130,6 @@
 			controller: 'myCtrl'
 		});
 		$urlRouterProvider.otherwise('main');
-	}]);
-})();
-(function () {
-	'use strict';
-
-	// appFooter,在html中对应app-footer
-	angular.module('app').directive('appFooter', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/template/footer.html',
-			link: function (scope, iElement, iAttrs) {
-				
-			}
-		};
-	}]);
-})();
-(function () {
-	'use strict';
-
-	// appHead,在html中对应app-head
-	angular.module('app').directive('appHead', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/template/head.html',
-			link: function (scope, iElement, iAttrs) {
-				
-			}
-		};
-	}]);
-})();
-(function () {
-	'use strict';
-
-	// appHead,在html中对应app-head-bar
-	angular.module('app').directive('appHeadBar', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/template/headBar.html',
-			scope: {
-				title: '@'
-			},
-			link: function (scope, iElement, iAttrs) {
-				scope.back = function () {
-					window.history.back();	
-				};
-				
-				scope.$on('to-child', function (event, data) {
-					console.log('to-child', event, data);
-				});
-				scope.$emit('to-parent', {show: 'hai'});
-			}
-		};
-	}]);
-})();
-(function () {
-	'use strict';
-
-	// appPositionList,在html中对应app-position-list
-	angular.module('app').directive('appPositionList', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/template/positionList.html',
-			// 修改scope,暴露data接口,降低模板和控制器之间的耦合
-			scope: {
-				data: '='
-			},
-			link: function (scope, iElement, iAttrs) {
-				
-			}
-		};
 	}]);
 })();
 (function () {
@@ -209,8 +236,91 @@
 (function () {
 	'use strict';
 	
-	angular.module('app').controller('searchCtrl', ['$scope', '$http', '$state', function ($scope, $http, $state) {
-		
+	angular.module('app').controller('searchCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+		/**
+		 * [filterData 数据过滤（模拟后台查询数据）]
+		 * @param  {[type]} data      [要过滤的数据]
+		 * @param  {[type]} fuzzyName [模糊查询的名字]
+		 * @param  {[type]} params    [参数: {cityName: '', jobName: '', salarayName: ''}]
+		 * @return {[type]}           [description]
+		 */
+		function filterData(data, fuzzyName, params) {
+			data = data || [];
+			var hasCity,
+				cityName,
+				hasJob,
+				jobName,
+				hasSalary,
+				salaryName;
+			data = data.filter(function (item, index) {
+				cityName = jobName = salaryName = '';
+				if(params && Object.keys(params).length){
+					if(params.cityName) cityName = params.cityName;
+					if(params.jobName) jobName = params.jobName;
+					if(params.salaryName) salaryName = params.salaryName;
+				}
+
+				if(fuzzyName) cityName = jobName = salaryName = fuzzyName;
+
+				hasCity = ~item.cityName.indexOf(fuzzyName) ? true : false;
+				hasJob = ~item.job.indexOf(fuzzyName) ? true : false;
+				hasSalary = ~item.salaryName.indexOf(fuzzyName) ? true : false;
+
+				return hasCity || hasJob || hasSalary;
+			});
+			return data;
+		}
+
+		/**
+		 * [queryJob 工作查询]
+		 * @param  {[type]} name   [description]
+		 * @param  {[type]} params [description]
+		 * @return {[type]}        [description]
+		 */
+		function queryJob(name, params) {
+			$http({
+				method: 'GET',
+	  			url: '/data/positionList.json',
+	  			params: (params || {})
+			}).then(function (resp) {
+				var data = resp.data;
+				filterData(data, name, params);
+				$scope.jobList = resp.data;
+			}, function (resp) {
+				
+			});
+		}
+
+		/**
+		 * [search 搜索事件]
+		 * @return {[type]} [description]
+		 */
+		$scope.search = function () {
+			queryJob($scope.name, {
+				jobName: $scope.jobName,
+				cityName: $scope.cityName,
+				salarayName: $scope.salarayName
+			});
+		};
+		/**
+		 * [cancel 取消事件]
+		 * @return {[type]} [description]
+		 */
+		$scope.cancel = function () {
+			$scope.name = '';
+			$scope.jobName = '';
+			$scope.cityName = '';
+			$scope.salarayName = '';
+			$scope.search();
+		};
+
+		// init event
+		$scope.search();
+		$scope.tabs = dict.searchTabs;
+		// TODO: 1.初始化弹框数据; 2.点击tab,弹出弹框; 3.点击弹框,更新tab展示,并刷新列表
+		$scope.city = dict.city;
+		$scope.salary = dict.salary;
+		$scope.scale = dict.scale;
 	}]);
 })();
 (function () {
@@ -244,6 +354,45 @@
 		};
 	}]);
 
+})();
+(function () {
+	'use strict';
+
+	// appSheet,在html中对应app-sheet
+	angular.module('app').directive('appSheet', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/index/sheet.html',
+			scope: {
+				
+			},
+			link: function (scope, iElement, iAttrs) {
+				
+			}
+		};
+	}]);
+})();
+(function () {
+	'use strict';
+
+	// appTab,在html中对应app-tab
+	angular.module('app').directive('appTab', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/index/tab.html',
+			scope: {
+				data: '='
+			},
+			link: function (scope, iElement, iAttrs) {
+				scope.selectId = scope.data[0].id;
+				scope.tabClick = function (item) {
+					scope.selectId = item.id;
+				};
+			}
+		};
+	}]);
 })();
 (function () {
 	'use strict';
@@ -309,6 +458,80 @@
 			},
 			link: function (scope, iElement, iAttrs) {
 				scope.imgPath = 'image/star'+(scope.isActive ? 'active' : '')+'.png';
+			}
+		};
+	}]);
+})();
+(function () {
+	'use strict';
+
+	// appFooter,在html中对应app-footer
+	angular.module('app').directive('appFooter', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/template/footer.html',
+			link: function (scope, iElement, iAttrs) {
+				
+			}
+		};
+	}]);
+})();
+(function () {
+	'use strict';
+
+	// appHead,在html中对应app-head
+	angular.module('app').directive('appHead', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/template/head.html',
+			link: function (scope, iElement, iAttrs) {
+				
+			}
+		};
+	}]);
+})();
+(function () {
+	'use strict';
+
+	// appHead,在html中对应app-head-bar
+	angular.module('app').directive('appHeadBar', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/template/headBar.html',
+			scope: {
+				title: '@'
+			},
+			link: function (scope, iElement, iAttrs) {
+				scope.back = function () {
+					window.history.back();	
+				};
+				
+				scope.$on('to-child', function (event, data) {
+					console.log('to-child', event, data);
+				});
+				scope.$emit('to-parent', {show: 'hai'});
+			}
+		};
+	}]);
+})();
+(function () {
+	'use strict';
+
+	// appPositionList,在html中对应app-position-list
+	angular.module('app').directive('appPositionList', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/template/positionList.html',
+			// 修改scope,暴露data接口,降低模板和控制器之间的耦合
+			scope: {
+				data: '='
+			},
+			link: function (scope, iElement, iAttrs) {
+				
 			}
 		};
 	}]);

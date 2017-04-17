@@ -7,13 +7,17 @@
 @import url(./common/property.less);
 @import url(./common/varaiable.less);
 
-@import url(./position.less);
+@import url(./job/position.less);
 
 /** job */
 @import url(./job/company.less);
 @import url(./job/positionClaz.less);
 @import url(./job/positionInfo.less);
 
+/** index */
+@import url(./index/search.less);
+@import url(./index/tab.less);
+@import url(./index/sheet.less);
 
 *{
 	padding: 0;
@@ -29,20 +33,21 @@ html,body{
 }
 
 body{
-	.fz(16);
+	.fs(16);
 	background-color: @bodyBgColor;
 }
 
+
 @media screen and(min-width: 1024px) {
-    html,body{
+    .pc{
         position: relative; 
         width: 640px;
         margin-left: auto;
         margin-right: auto;
-    }
-    .footer{
-    	max-width: 640px;
-    	margin: 0 auto;
+        .footer,.search-bar,.tab,.bottom-btn,.sheet-wrap{
+	    	max-width: 640px;
+	    	margin: 0 auto;
+	    }
     }
 }
 

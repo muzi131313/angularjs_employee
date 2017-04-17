@@ -1,0 +1,48 @@
+@import url(../common/mixin.less);
+@import url(../common/varaiable.less);
+
+.search-bar{
+	background-color: @headerBgColor;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 7px;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	width: 100%;
+	.search-btn{
+		background-color: @headerBgColor;
+		height: 40px;
+		line-height: 40px;
+		&.search-cancel{
+			width: 13%;
+			color: @defaultColor;
+		}
+		&.search-go{
+			width: 17%;
+			color: @muterColor;
+		}
+		&.search-go-icon{
+			height: 30px;
+			width: 30px;
+			transform: scale(.6);
+		}
+	}
+	.search-input{
+	    height: 30px;
+	    width: 70%;
+	    vertical-align: middle;
+	    display: inline-block;
+	    border-radius: 15px;
+	    border-style: none; /** 消除浏览器默认边框*/
+	    outline-style: none; /** 不显示浏览器默认轮廓*/
+	    padding-left: 20px; /** 左内边距*/
+	    position: relative; /** 居中*/
+	    top: 5px;
+	}
+}
+
+.search-bar-replace{
+	height: 80px;
+}
