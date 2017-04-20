@@ -8,7 +8,8 @@
 			replace: true,
 			templateUrl: 'view/index/sheet.html',
 			scope: {
-				
+				datas: '=',
+				visible: '='
 			},
 			link: function (scope, iElement, iAttrs) {
 				

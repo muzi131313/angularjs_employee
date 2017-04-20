@@ -8,12 +8,14 @@
 			replace: true,
 			templateUrl: 'view/index/tab.html',
 			scope: {
-				data: '='
+				data: '=',
+				tabClick: '&'
 			},
 			link: function (scope, iElement, iAttrs) {
 				scope.selectId = scope.data[0].id;
-				scope.tabClick = function (item) {
+				scope.click = function (item) {
 					scope.selectId = item.id;
+					scope.tabClick(item);
 				};
 			}
 		};

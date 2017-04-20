@@ -72,6 +72,7 @@
 		 * @return {[type]} [description]
 		 */
 		$scope.cancel = function () {
+			// console.log('cancel...');
 			$scope.name = '';
 			$scope.jobName = '';
 			$scope.cityName = '';
@@ -82,7 +83,7 @@
 		// init event
 		$scope.search();
 		$scope.tabs = dict.searchTabs;
-		// TODO: 1.初始化弹框数据; 2.点击tab,弹出弹框; 3.点击弹框,更新tab展示,并刷新列表
+		// TODO: 1.初始化弹框数据; 2.点击tab,弹出弹框; 3.点击弹框,更新tab展示,并刷新列表; 4.搜索取消事件未完成
 		$scope.city = dict.city;
 		$scope.salary = dict.salary;
 		$scope.scale = dict.scale;
