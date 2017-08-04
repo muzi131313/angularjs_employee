@@ -168,7 +168,7 @@
   			url: '/data/positionList.json'
 		}).then(function (resp) {
 			$scope.jobList = resp.data;
-		}, function (resp) {
+		}, function (err) {
 			
 		});
 	}]);
