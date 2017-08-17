@@ -235,7 +235,7 @@
 })();
 (function () {
 	'use strict';
-	
+
 	angular.module('app').controller('searchCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
 		/**
 		 * [filterData 数据过滤（模拟后台查询数据）]
@@ -278,6 +278,7 @@
 		 * @return {[type]}        [description]
 		 */
 		function queryJob(name, params) {
+			// console.log('name and params: ', name, params);
 			$http({
 				method: 'GET',
 	  			url: '/data/positionList.json',
@@ -287,7 +288,7 @@
 				filterData(data, name, params);
 				$scope.jobList = resp.data;
 			}, function (resp) {
-				
+
 			});
 		}
 
@@ -315,6 +316,27 @@
 			$scope.search();
 		};
 
+		/**
+		 * [tabClick tab点击事件]
+		 * @param  {[type]} item [description]
+		 * @return {[type]}      [description]
+		 */
+		$scope.tabClick = function(id, name) {
+			console.log('tab click item: ', id, name, dict);
+			$scope.sheets.list = dict[id].data;
+			$scope.sheets.visible = true;
+		}
+
+		/**
+		 * [select 选择框选中事件]
+		 * @param  {[type]} item [description]
+		 * @return {[type]}      [description]
+		 */
+		$scope.selectClick = function(id, name) {
+			console.log('selectClick item: ', id, name);
+			// TODO: 点击之后，tab的文字发生变化
+		}
+
 		// init event
 		$scope.search();
 		$scope.tabs = dict.searchTabs;
@@ -322,8 +344,10 @@
 		$scope.city = dict.city;
 		$scope.salary = dict.salary;
 		$scope.scale = dict.scale;
+		$scope.sheets = {};
 	}]);
 })();
+
 (function () {
 	'use strict';
 	
@@ -367,14 +391,18 @@
 			templateUrl: 'view/index/sheet.html',
 			scope: {
 				datas: '=',
-				visible: '='
+				visible: '=',
+				select: '&'
 			},
 			link: function (scope, iElement, iAttrs) {
-				
+				scope.cancelSheet = function() {
+					scope.visible = false;
+				}
 			}
 		};
 	}]);
 })();
+
 (function () {
 	'use strict';
 
@@ -398,6 +426,7 @@
 		};
 	}]);
 })();
+
 (function () {
 	'use strict';
 

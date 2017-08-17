@@ -9,8 +9,8 @@
 </div>
 <div class="search-bar-replace"></div>
 
-<div app-tab data="tabs"></div>
+<div app-tab data="tabs" tab-click="tabClick(id, name)"></div>
 <div app-position-list data="jobList"></div>
 
 <div app-footer></div>
-<div app-sheet sheets="sheets" visible="visible"></div>
+<div app-sheet datas="sheets.list" visible="sheets.visible" select="selectClick(id, name)"></div>

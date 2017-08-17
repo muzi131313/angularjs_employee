@@ -9,10 +9,13 @@
 			templateUrl: 'view/index/sheet.html',
 			scope: {
 				datas: '=',
-				visible: '='
+				visible: '=',
+				select: '&'
 			},
 			link: function (scope, iElement, iAttrs) {
-				
+				scope.cancelSheet = function() {
+					scope.visible = false;
+				}
 			}
 		};
 	}]);

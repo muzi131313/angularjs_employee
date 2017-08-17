@@ -1,1 +1,1 @@
-<div class="sheet" ng-show="visible"><div class="sheet-wrap"><ul class="sheet-items"><li class="sheet-btn ta-c" ng-repeat="sheet in datas" ng-bind="sheet.name" data-id="sheet.id"></li></ul><button class="sheet-cancel ta-c">取消</button></div></div>
+<div class="sheet" ng-show="visible" ng-click="cancelSheet()"><div class="sheet-wrap"><ul class="sheet-items"><li class="sheet-btn ta-c" ng-repeat="sheet in datas" ng-bind="sheet.name" data-id="sheet.id" ng-click="select(sheet)"></li></ul><button class="sheet-cancel ta-c" ng-click="cancelSheet()">取消</button></div></div>
