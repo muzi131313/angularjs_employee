@@ -325,6 +325,7 @@
 			console.log('tab click item: ', id, name, dict);
 			$scope.sheets.list = dict[id].data;
 			$scope.sheets.visible = true;
+			$scope.tabId = id;
 		}
 
 		/**
@@ -333,8 +334,34 @@
 		 * @return {[type]}      [description]
 		 */
 		$scope.selectClick = function(id, name) {
-			console.log('selectClick item: ', id, name);
-			// TODO: 点击之后，tab的文字发生变化
+			var tabId = $scope.tabId;
+			console.log('selectClick item: ', id, name, tabId);
+			// 点击之后，tab的文字发生变化
+			if (id) {
+				angular.forEach($scope.tabs, function (item) {
+					if (item.id == tabId) {
+						item.name = name;
+					}
+				});
+				$scope.filterObj[tabId + 'Id'] = id;
+			} else {
+				delete $scope.filterObj[tabId + 'Id'];
+				angular.forEach($scope.tabs, function (item) {
+					if (item.id == tabId) {
+						switch(item.id){
+							case 'city':
+								item.name = '城市';
+								break;
+							case 'salary':
+								item.name = '薪水';
+								break;
+							case 'scale':
+								item.name = '公司规模';
+								break;
+						}
+					}
+				});
+			}
 		}
 
 		// init event
@@ -345,8 +372,33 @@
 		$scope.salary = dict.salary;
 		$scope.scale = dict.scale;
 		$scope.sheets = {};
+		$scope.filterObj = {};
 	}]);
 })();
+
+'use strict';
+
+angular.module('app').filter('filterByObj', [function () {
+    return function (list, obj) {
+        var result = [];
+        if (!list) return result;
+        // console.log('params: ', list, obj);
+        angular.forEach(list, function (item) {
+            var isEqual = true;
+            for (var e in obj) {
+                // console.log('item, obj[e]', item, obj[e]);
+                if (item[e] !== obj[e]) {
+                    isEqual = false;
+                }
+            }
+            if (isEqual) {
+                result.push(item);
+            }
+        });
+        console.log('result: ', result);
+        return result;
+    }
+}]);
 
 (function () {
 	'use strict';
@@ -380,53 +432,6 @@
 	}]);
 
 })();
-(function () {
-	'use strict';
-
-	// appSheet,在html中对应app-sheet
-	angular.module('app').directive('appSheet', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/index/sheet.html',
-			scope: {
-				datas: '=',
-				visible: '=',
-				select: '&'
-			},
-			link: function (scope, iElement, iAttrs) {
-				scope.cancelSheet = function() {
-					scope.visible = false;
-				}
-			}
-		};
-	}]);
-})();
-
-(function () {
-	'use strict';
-
-	// appTab,在html中对应app-tab
-	angular.module('app').directive('appTab', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/index/tab.html',
-			scope: {
-				data: '=',
-				tabClick: '&'
-			},
-			link: function (scope, iElement, iAttrs) {
-				scope.selectId = scope.data[0].id;
-				scope.click = function (item) {
-					scope.selectId = item.id;
-					scope.tabClick(item);
-				};
-			}
-		};
-	}]);
-})();
-
 (function () {
 	'use strict';
 
@@ -498,6 +503,53 @@
 (function () {
 	'use strict';
 
+	// appSheet,在html中对应app-sheet
+	angular.module('app').directive('appSheet', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/index/sheet.html',
+			scope: {
+				datas: '=',
+				visible: '=',
+				select: '&'
+			},
+			link: function (scope, iElement, iAttrs) {
+				scope.cancelSheet = function() {
+					scope.visible = false;
+				}
+			}
+		};
+	}]);
+})();
+
+(function () {
+	'use strict';
+
+	// appTab,在html中对应app-tab
+	angular.module('app').directive('appTab', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/index/tab.html',
+			scope: {
+				data: '=',
+				tabClick: '&'
+			},
+			link: function (scope, iElement, iAttrs) {
+				scope.selectId = scope.data[0].id;
+				scope.click = function (item) {
+					scope.selectId = item.id;
+					scope.tabClick(item);
+				};
+			}
+		};
+	}]);
+})();
+
+(function () {
+	'use strict';
+
 	// appFooter,在html中对应app-footer
 	angular.module('app').directive('appFooter', [function () {
 		return {
@@ -561,10 +613,11 @@
 			templateUrl: 'view/template/positionList.html',
 			// 修改scope,暴露data接口,降低模板和控制器之间的耦合
 			scope: {
-				data: '='
+				data: '=',
+				filterObj: '='
 			},
 			link: function (scope, iElement, iAttrs) {
-				
+
 			}
 		};
 	}]);

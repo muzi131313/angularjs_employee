@@ -9,10 +9,11 @@
 			templateUrl: 'view/template/positionList.html',
 			// 修改scope,暴露data接口,降低模板和控制器之间的耦合
 			scope: {
-				data: '='
+				data: '=',
+				filterObj: '='
 			},
 			link: function (scope, iElement, iAttrs) {
-				
+
 			}
 		};
 	}]);
