@@ -1,0 +1,73 @@
+@import url(../common/varaiable.less);
+@import url(../common/property.less);
+@import url(../common/mixin.less);
+
+.login {
+    background-image: url('../../image/background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    form {
+        .mt(260);
+        input,
+        button {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        input {
+            .w(300);
+            .h(40);
+            border-width: 0;
+            outline: none;
+            background-color: @formBgColor;
+            color: @defaultColor;
+            text-indent: 15px;
+            &::-webkit-input-placeholder {
+                color: @defaultColor;
+                text-indent: 15px;
+            }
+            &:-moz-placeholder {
+                /* Mozilla Firefox 4 to 18 */
+                color: @defaultColor;
+                text-indent: 15px;
+            }
+
+            &::-moz-placeholder {
+                /* Mozilla Firefox 19+ */
+                color: @defaultColor;
+                text-indent: 15px;
+            }
+
+            &:-ms-input-placeholder {
+                /* Internet Explorer 10+ */
+                color: @defaultColor;
+                text-indent: 15px;
+            }
+            &:first-child {
+                border-bottom: 1px solid @defaultColor;
+            }
+        }
+        button {
+            .w(300);
+            .h(35);
+            font-weight: bold;
+            font-size: 22px;
+            &.login-btn {
+                margin-top: 75px;
+                background-color: @headerBgColor;
+                color: @defaultColor;
+            }
+            &.register-btn {
+                margin-top: 20px;
+                background-color: @btnBgColor;
+                color: @headerBgColor;
+                border: 1px solid @headerBgColor;
+            }
+        }
+    }
+}

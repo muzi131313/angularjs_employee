@@ -108,30 +108,59 @@
 	'use strict';
 
 	angular.module('app').config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-		$stateProvider.state('main', {
+		$stateProvider
+		.state('main', {
 			url: '/main',
 			templateUrl: 'view/main.html',
 			controller: 'mainCtrl'
-		}).state('position', {
+		})
+		.state('position', {
 			url: '/position/:id',
 			templateUrl: 'view/position.html',
 			controller: 'positionCtrl'
-		}).state('company', {
+		})
+		.state('company', {
 			url: '/company/:id',
 			templateUrl: 'view/company.html',
 			controller: 'companyCtrl'
-		}).state('search', {
+		})
+		.state('search', {
 			url: '/search',
 			templateUrl: 'view/search.html',
 			controller: 'searchCtrl'
-		}).state('my', {
+		})
+		.state('my', {
 			url: '/my',
 			templateUrl: 'view/my.html',
 			controller: 'myCtrl'
+		})
+
+		// 登录用户模块
+		.state('favourite', {
+			url: '/favourite',
+			templateUrl: 'view/user/favourite.html',
+			controller: 'favouriteCtrl'
+		}).state('login', {
+			url: '/login',
+			templateUrl: 'view/user/login.html',
+			controller: 'loginCtrl'
+		}).state('person', {
+			url: '/person',
+			templateUrl: 'view/user/person.html',
+			controller: 'personCtrl'
+		}).state('post', {
+			url: '/post',
+			templateUrl: 'view/user/post.html',
+			controller: 'postCtrl'
+		}).state('register', {
+			url: '/post',
+			templateUrl: 'view/user/register.html',
+			controller: 'registerCtrl'
 		});
 		$urlRouterProvider.otherwise('main');
 	}]);
 })();
+
 (function () {
 	'use strict';
 	
@@ -159,6 +188,18 @@
 		});
 	}]);
 })();
+'use strict';
+
+angular.module('app').controller('favouriteCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+    // body...
+}]);
+
+'use strict';
+
+angular.module('app').controller('loginCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+    // body...
+}]);
+
 (function () {
 	'use strict';
 
@@ -180,6 +221,12 @@
 		
 	}]);
 })();
+'use strict';
+
+angular.module('app').controller('personCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+    // body...
+}]);
+
 (function () {
 	'use strict';
 	
@@ -233,6 +280,18 @@
 		});
 	}]);
 })();
+'use strict';
+
+angular.module('app').controller('postCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+    // body...
+}]);
+
+'use strict';
+
+angular.module('app').controller('registerCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+    // body...
+}]);
+
 (function () {
 	'use strict';
 
@@ -435,6 +494,53 @@ angular.module('app').filter('filterByObj', [function () {
 (function () {
 	'use strict';
 
+	// appSheet,在html中对应app-sheet
+	angular.module('app').directive('appSheet', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/index/sheet.html',
+			scope: {
+				datas: '=',
+				visible: '=',
+				select: '&'
+			},
+			link: function (scope, iElement, iAttrs) {
+				scope.cancelSheet = function() {
+					scope.visible = false;
+				}
+			}
+		};
+	}]);
+})();
+
+(function () {
+	'use strict';
+
+	// appTab,在html中对应app-tab
+	angular.module('app').directive('appTab', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/index/tab.html',
+			scope: {
+				data: '=',
+				tabClick: '&'
+			},
+			link: function (scope, iElement, iAttrs) {
+				scope.selectId = scope.data[0].id;
+				scope.click = function (item) {
+					scope.selectId = item.id;
+					scope.tabClick(item);
+				};
+			}
+		};
+	}]);
+})();
+
+(function () {
+	'use strict';
+
 	// appHead,在html中对应app-company
 	angular.module('app').directive('appCompany', [function () {
 		return {
@@ -500,53 +606,6 @@ angular.module('app').filter('filterByObj', [function () {
 		};
 	}]);
 })();
-(function () {
-	'use strict';
-
-	// appSheet,在html中对应app-sheet
-	angular.module('app').directive('appSheet', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/index/sheet.html',
-			scope: {
-				datas: '=',
-				visible: '=',
-				select: '&'
-			},
-			link: function (scope, iElement, iAttrs) {
-				scope.cancelSheet = function() {
-					scope.visible = false;
-				}
-			}
-		};
-	}]);
-})();
-
-(function () {
-	'use strict';
-
-	// appTab,在html中对应app-tab
-	angular.module('app').directive('appTab', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/index/tab.html',
-			scope: {
-				data: '=',
-				tabClick: '&'
-			},
-			link: function (scope, iElement, iAttrs) {
-				scope.selectId = scope.data[0].id;
-				scope.click = function (item) {
-					scope.selectId = item.id;
-					scope.tabClick(item);
-				};
-			}
-		};
-	}]);
-})();
-
 (function () {
 	'use strict';
 
