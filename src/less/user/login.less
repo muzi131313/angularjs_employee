@@ -14,42 +14,71 @@
     right: 0;
     form {
         .mt(260);
-        input,
+        .form-line,
         button {
             margin-left: auto;
             margin-right: auto;
         }
-        input {
+        .form-line {
             .w(300);
             .h(40);
-            border-width: 0;
-            outline: none;
-            background-color: @formBgColor;
+            .lh(40);
+            // background-color: @formBgColor;
             color: @defaultColor;
-            text-indent: 15px;
-            &::-webkit-input-placeholder {
-                color: @defaultColor;
-                text-indent: 15px;
-            }
-            &:-moz-placeholder {
-                /* Mozilla Firefox 4 to 18 */
-                color: @defaultColor;
-                text-indent: 15px;
-            }
-
-            &::-moz-placeholder {
-                /* Mozilla Firefox 19+ */
-                color: @defaultColor;
-                text-indent: 15px;
-            }
-
-            &:-ms-input-placeholder {
-                /* Internet Explorer 10+ */
-                color: @defaultColor;
-                text-indent: 15px;
-            }
+            box-sizing: content-box;
+            font-size: 0;
             &:first-child {
                 border-bottom: 1px solid @defaultColor;
+            }
+            .account, .lock{
+                width: 23px;
+                height: 24px;
+                .w(55);
+                height: 100%;
+                background-color: @iconBgColor;
+                position: relative;
+                margin-top: -11px;
+                background-position: 15px 8px;
+                background-repeat: no-repeat;
+            }
+            .account{
+                background-image: url('../../image/account.png');
+            }
+            .lock{
+                background-image: url('../../image/lock.png');
+            }
+            input{
+                color: @defaultColor;
+                text-indent: 15px;
+                background-color: @formBgColor;
+                border-width: 0;
+                outline: none;
+                height: 100%;
+                .w(245);
+                .fs(14);
+                box-sizing: border-box;
+                // .pl(30);
+                &::-webkit-input-placeholder {
+                    color: @defaultColor;
+                    text-indent: 15px;
+                }
+                &:-moz-placeholder {
+                    /* Mozilla Firefox 4 to 18 */
+                    color: @defaultColor;
+                    text-indent: 15px;
+                }
+
+                &::-moz-placeholder {
+                    /* Mozilla Firefox 19+ */
+                    color: @defaultColor;
+                    text-indent: 15px;
+                }
+
+                &:-ms-input-placeholder {
+                    /* Internet Explorer 10+ */
+                    color: @defaultColor;
+                    text-indent: 15px;
+                }
             }
         }
         button {
