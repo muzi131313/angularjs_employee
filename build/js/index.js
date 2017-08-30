@@ -1,8 +1,9 @@
 (function () {
 	'use strict';
-	
-	angular.module('app', ['ui.router', 'ngCookies']);
+
+	angular.module('app', ['ui.router', 'ngCookies', 'validation']);
 })();
+
 (function () {
 	'use strict';
 
@@ -153,7 +154,7 @@
 			templateUrl: 'view/user/post.html',
 			controller: 'postCtrl'
 		}).state('register', {
-			url: '/post',
+			url: '/register',
 			templateUrl: 'view/user/register.html',
 			controller: 'registerCtrl'
 		});
@@ -162,10 +163,33 @@
 })();
 
 (function () {
+    'use strict';
+    angular.module('app').config(['$validationProvider', function($validationProvider) {
+        var expression = {
+            phone: /^1[\d]{10}/,
+            password: function (value) {
+                return (value + '').length > 5;
+            }
+        };
+        var defaultMsg = {
+            phone: {
+                success: '',
+                error: '必须是11位手机号'
+            },
+            password: {
+                success: '',
+                error: '长度至少6位'
+            }
+        };
+        $validationProvider.setExpression(expression).setDefaultMsg(defaultMsg);
+    }])
+})();
+
+(function () {
 	'use strict';
-	
+
 	angular.module('app').controller('companyCtrl', ['$scope', '$http', '$state', function ($scope, $http, $state) {
-		
+
 		var companyId = $state.params.id;
 
 		$http({
@@ -180,7 +204,7 @@
 			$scope.$broadcast('to-child', {word: 'world!'});
 
 		}, function (resp) {
-			
+
 		});
 
 		$scope.$on('to-parent', function (event, data) {
@@ -188,17 +212,24 @@
 		});
 	}]);
 })();
-'use strict';
 
-angular.module('app').controller('favouriteCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
-    // body...
-}]);
+(function () {
+    'use strict';
 
-'use strict';
+    angular.module('app').controller('favouriteCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+        $scope.favouriteList = [{
 
-angular.module('app').controller('loginCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
-    // body...
-}]);
+        }]
+    }]);
+})();
+
+(function () {
+    'use strict';
+
+    angular.module('app').controller('loginCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+        // body...
+    }]);
+})();
 
 (function () {
 	'use strict';
@@ -221,11 +252,14 @@ angular.module('app').controller('loginCtrl', ['$scope', '$http', '$state', 'dic
 		
 	}]);
 })();
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('app').controller('personCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
-    // body...
-}]);
+    angular.module('app').controller('personCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+        // body...
+        //
+    }]);
+})();
 
 (function () {
 	'use strict';
@@ -280,17 +314,65 @@ angular.module('app').controller('personCtrl', ['$scope', '$http', '$state', 'di
 		});
 	}]);
 })();
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('app').controller('postCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
-    // body...
-}]);
+    angular.module('app').controller('postCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
+        $scope.tabClick = function (id, name) {
 
-'use strict';
+        }
+        $scope.tabs = [{
+            id: 'all',
+            name: '全部'
+        }, {
+            id: 'pass',
+            name: '面试邀请'
+        }, {
+            id: 'fail',
+            name: '不合适'
+        }]
+        $scope.postList = [{
 
-angular.module('app').controller('registerCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
-    // body...
-}]);
+        }]
+    }]);
+})();
+
+(function () {
+    'use strict';
+
+    // $interval,使用系统的interval,如果使用系统的,有可能导致ng-model不刷新,或者刷新失败
+    angular.module('app').controller('registerCtrl', ['$scope', '$http', '$state', 'dict', '$interval', function ($scope, $http, $state, dict, $interval) {
+        $scope.user = {};
+        $scope.mySubmit = function () {
+            console.log('$scope.user: ', $scope.user)
+        }
+        var count = 60;
+        $scope.sendMsgCode = function () {
+            $http({
+                method: 'GET',
+                url: 'data/code.json',
+                params: {}
+            }).then(function (resp) {
+                if (1 === +resp.data.state) {
+                    count = 60;
+                    var timer = $interval(function () {
+                        if (count <= 0) {
+                            $interval.cancel(timer);
+                            $scope.time = '';
+                            return;
+                        }
+                        count--;
+                        $scope.time = count + 's';
+                    }, 1e3);
+                }
+            })
+            .catch(function (e) {
+                console.log('get code.json exists error: ', e)
+            });
+        }
+    }]);
+
+})();
 
 (function () {
 	'use strict';

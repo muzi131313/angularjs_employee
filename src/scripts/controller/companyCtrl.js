@@ -1,8 +1,8 @@
 (function () {
 	'use strict';
-	
+
 	angular.module('app').controller('companyCtrl', ['$scope', '$http', '$state', function ($scope, $http, $state) {
-		
+
 		var companyId = $state.params.id;
 
 		$http({
@@ -17,7 +17,7 @@
 			$scope.$broadcast('to-child', {word: 'world!'});
 
 		}, function (resp) {
-			
+
 		});
 
 		$scope.$on('to-parent', function (event, data) {

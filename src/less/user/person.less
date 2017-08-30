@@ -1,0 +1,41 @@
+@import url(../common/varaiable.less);
+@import url(../common/property.less);
+@import url(../common/mixin.less);
+
+.person{
+    .user{
+        .mt(60);
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .name{
+        .mt(20);
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+    .btns{
+        .mt(40);
+        button{
+            color: @defaultColor;
+            .fs(16);
+        }
+        .blue-btn{
+            background-color: @headerBgColor;
+            .w(150);
+            .h(95);
+            &:first-child{
+                .mr(12);
+            }
+            &:nth-child(2){
+                .ml(12);
+            }
+        }
+        .red-btn{
+            background-color: @dangerColor;
+            .mt(20);
+            .w(340);
+            .h(40);
+        }
+    }
+}

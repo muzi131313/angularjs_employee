@@ -47,7 +47,7 @@
 			templateUrl: 'view/user/post.html',
 			controller: 'postCtrl'
 		}).state('register', {
-			url: '/post',
+			url: '/register',
 			templateUrl: 'view/user/register.html',
 			controller: 'registerCtrl'
 		});
