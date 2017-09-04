@@ -6,6 +6,9 @@
         $scope.user = {};
         $scope.mySubmit = function () {
             console.log('$scope.user: ', $scope.user)
+            $http.post('data/regist.json', $scope.user).success(function (resp) {
+                console.log('resp:', resp);
+            });
         }
         var count = 60;
         $scope.sendMsgCode = function () {
