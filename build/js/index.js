@@ -55,6 +55,7 @@
 })();
 (function () {
     'use strict';
+
     angular.module('app').config(['$provide',function($provide) {
         /**
          * [装饰器模式,把post请求改成get请求]
