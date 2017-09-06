@@ -5,6 +5,9 @@
             phone: /^1[\d]{10}/,
             password: function (value) {
                 return (value + '').length > 5;
+            },
+            required: function (value) {
+                return !!value;
             }
         };
         var defaultMsg = {
@@ -15,6 +18,10 @@
             password: {
                 success: '',
                 error: '长度至少6位'
+            },
+            required: {
+                sccess: '',
+                error: '不能为空'
             }
         };
         $validationProvider.setExpression(expression).setDefaultMsg(defaultMsg);

@@ -19,6 +19,16 @@
             margin-left: auto;
             margin-right: auto;
         }
+        .ng-invalid{
+            &+span{
+                background-color: transparent;
+                position: absolute;
+                color: @dangerColor;
+                right: 0;
+                height: 100%;
+                font-size: 12px;
+            }
+        }
         .form-line {
             .w(300);
             .h(40);

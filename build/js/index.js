@@ -72,17 +72,18 @@
                 // 1.6.3版本, 使用then/catch方式,废弃了success/error方法
                 $delegate.get(url).then(function (resp) {
                     def.resolve(resp);
-                }).catch(function (err) {
+                }, function (err) {
                     def.reject(err);
                 });
-                return {
-                    success: function (cb) {
-                        def.promise.then(cb);
-                    },
-                    error: function (cb) {
-                        def.promise.then(null, cb);
-                    }
-                }
+                return def.promise;
+                // {
+                //     then: function (cb) {
+                //         def.promise.then(cb);
+                //     },
+                //     catch: function (cb) {
+                //         def.promise.then(null, cb);
+                //     }
+                // }
             }
             return $delegate; // 记得return $delegate, 否则什么也没有了
         }]);
@@ -205,6 +206,9 @@
             phone: /^1[\d]{10}/,
             password: function (value) {
                 return (value + '').length > 5;
+            },
+            required: function (value) {
+                return !!value;
             }
         };
         var defaultMsg = {
@@ -215,6 +219,10 @@
             password: {
                 success: '',
                 error: '长度至少6位'
+            },
+            required: {
+                sccess: '',
+                error: '不能为空'
             }
         };
         $validationProvider.setExpression(expression).setDefaultMsg(defaultMsg);
@@ -262,8 +270,19 @@
 (function () {
     'use strict';
 
-    angular.module('app').controller('loginCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
-        // body...
+    angular.module('app').controller('loginCtrl', ['cache', '$scope', '$http', '$state', 'dict', function (cache, $scope, $http, $state, dict) {
+        $scope.submit = function () {
+            $http.post('data/login.json', $scope.user)
+            .then(function (resp) {
+                var data = resp.data;
+                cache.put('id', data.id);
+                cache.put('name', data.name);
+                cache.put('image', data.image);
+                $state.go('main');
+            }, function (e) {
+                console.log('submit() exists error: ', e);
+            });
+        }
     }]);
 })();
 
@@ -291,9 +310,17 @@
 (function () {
     'use strict';
 
-    angular.module('app').controller('personCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
-        // body...
-        //
+    angular.module('app').controller('personCtrl', ['cache', '$scope', '$http', '$state', 'dict', function (cache, $scope, $http, $state, dict) {
+        if (cache.get('name')) {
+            $scope.name = cache.get('name');
+            $scope.image = cache.get('image');
+        }
+        $scope.logout = function () {
+            cache.remove('id');
+            cache.remove('name');
+            cache.remove('image');
+            $state.go('main');
+        }
     }]);
 })();
 
@@ -367,9 +394,30 @@
             id: 'fail',
             name: '不合适'
         }]
-        $scope.postList = [{
+        $http.get('data/myPost.json').then(function (resp) {
+            var data = resp.data;
+            $scope.postList = data;
+            console.log('resp data: ', data);
+        }, function (err) {
+            console.log('myPost.json exists error: ', err);
+        });
 
-        }]
+        $scope.tabClick = function (id, name) {
+            console.log(id, name);
+            var filterObj = $scope.filterObj;
+            switch (id) {
+                case 'all':
+                    delete filterObj.state;
+                    break;
+                case 'pass':
+                    filterObj.state = '1';
+                    break;
+                case 'fail':
+                    filterObj.state = '-1';
+                    break;
+            }
+        }
+        $scope.filterObj = {}
     }]);
 })();
 
@@ -381,8 +429,12 @@
         $scope.user = {};
         $scope.mySubmit = function () {
             console.log('$scope.user: ', $scope.user)
-            $http.post('data/regist.json', $scope.user).success(function (resp) {
-                console.log('resp:', resp);
+            $http
+            .post('data/regist.json', $scope.user)
+            .then(function (resp) {
+                $state.go('login');
+            }, function (e) {
+                console.log('regist.json exists error: ', e);
             });
         }
         var count = 60;
@@ -404,8 +456,7 @@
                         $scope.time = count + 's';
                     }, 1e3);
                 }
-            })
-            .catch(function (e) {
+            }, function (e) {
                 console.log('get code.json exists error: ', e)
             });
         }
@@ -794,10 +845,12 @@ angular.module('app').filter('filterByObj', [function () {
 			// 修改scope,暴露data接口,降低模板和控制器之间的耦合
 			scope: {
 				data: '=',
-				filterObj: '='
+				filterObj: '=',
+				claz: '='
 			},
 			link: function (scope, iElement, iAttrs) {
-
+				// 处理自定义class,从接口中传入
+				scope.myClaz = iAttrs.claz || '';
 			}
 		};
 	}]);

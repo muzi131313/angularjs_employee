@@ -6,8 +6,12 @@
         $scope.user = {};
         $scope.mySubmit = function () {
             console.log('$scope.user: ', $scope.user)
-            $http.post('data/regist.json', $scope.user).success(function (resp) {
-                console.log('resp:', resp);
+            $http
+            .post('data/regist.json', $scope.user)
+            .then(function (resp) {
+                $state.go('login');
+            }, function (e) {
+                console.log('regist.json exists error: ', e);
             });
         }
         var count = 60;
@@ -29,8 +33,7 @@
                         $scope.time = count + 's';
                     }, 1e3);
                 }
-            })
-            .catch(function (e) {
+            }, function (e) {
                 console.log('get code.json exists error: ', e)
             });
         }

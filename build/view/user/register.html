@@ -6,17 +6,20 @@
             <!-- form中的属性建议挂载到一个对象上,提交的时候,提交这个变量就OK了 -->
             <input type="text" class="d-ib" name="phone" id="" placeholder="输入手机号"
                 ng-model="user.phone"
-                validator="phone">
+                validator="required,phone">
         </div>
         <div class="form-line ta-l p-r">
             <span class="icon lock d-ib va-m"></span>
             <input type="password" class="d-ib" name="password" id="" placeholder="设置6位以上的密码"
                 ng-model="user.password"
-                validator="password">
+                validator="required,password">
         </div>
         <div class="form-line ta-l send-wrap">
-            <input type="text" class="d-ib" name="" id="" placeholder="短信验证码"
-                ng-model="user.code">
+            <div class="code-wrap">
+                <input type="text" class="d-ib" name="code" id="" placeholder="短信验证码"
+                    ng-model="user.code"
+                    validator="required">
+            </div>
             <button class="send register-btn {{time ? 'disabled' : ''}}"
                 ng-click="time ? 1== 1 : sendMsgCode()"
                 ng-bind="time ? time : '发送短信'"></button>

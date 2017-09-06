@@ -17,17 +17,18 @@
                 // 1.6.3版本, 使用then/catch方式,废弃了success/error方法
                 $delegate.get(url).then(function (resp) {
                     def.resolve(resp);
-                }).catch(function (err) {
+                }, function (err) {
                     def.reject(err);
                 });
-                return {
-                    success: function (cb) {
-                        def.promise.then(cb);
-                    },
-                    error: function (cb) {
-                        def.promise.then(null, cb);
-                    }
-                }
+                return def.promise;
+                // {
+                //     then: function (cb) {
+                //         def.promise.then(cb);
+                //     },
+                //     catch: function (cb) {
+                //         def.promise.then(null, cb);
+                //     }
+                // }
             }
             return $delegate; // 记得return $delegate, 否则什么也没有了
         }]);
