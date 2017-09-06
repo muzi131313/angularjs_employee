@@ -2,7 +2,7 @@
 	'use strict';
 
 	// appPositionList,在html中对应app-position-list
-	angular.module('app').directive('appPositionList', [function () {
+	angular.module('app').directive('appPositionList', ['$http', function ($http) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -11,11 +11,24 @@
 			scope: {
 				data: '=',
 				filterObj: '=',
-				claz: '='
+				claz: '=',
+				isFavourite: '='
 			},
 			link: function (scope, iElement, iAttrs) {
 				// 处理自定义class,从接口中传入
 				scope.myClaz = iAttrs.claz || '';
+				if (iAttrs.isFavourite) {
+					// 组件内,搜藏点击事件
+					scope.select = function (item) {
+						$http.post('data/favorite.json', {
+							id: item.id,
+							select: !item.select
+						}).then(function (resp) {
+							var data = resp.data;
+							item.select = !item.select;
+						});
+					}
+				}
 			}
 		};
 	}]);

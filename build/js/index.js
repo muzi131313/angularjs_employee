@@ -261,9 +261,11 @@
     'use strict';
 
     angular.module('app').controller('favouriteCtrl', ['$scope', '$http', '$state', 'dict', function ($scope, $http, $state, dict) {
-        $scope.favouriteList = [{
-
-        }]
+        $http.get('data/myFavorite.json').then(function (resp) {
+            var data = resp.data;
+            $scope.favouriteList = data;
+            console.log('favourite.json data: ', data);
+        });
     }]);
 })();
 
@@ -326,15 +328,35 @@
 
 (function () {
 	'use strict';
-	
-	angular.module('app').controller('positionCtrl', ['$scope', '$http', '$state', '$q', 'cache', function ($scope, $http, $state, $q, cache) {
+
+	angular.module('app').controller('positionCtrl', ['$log', '$scope', '$http', '$state', '$q', 'cache', function ($log, $scope, $http, $state, $q, cache) {
 
 		var positionId = $state.params.id;
 
-		$scope.isLogin = false;
+		$scope.isLogin = cache.get('name') ? true : false;
 		$scope.isActive = false;
 
 		cache.put('key', 'day');
+		$scope.message = $scope.isLogin ? '投个简历' : '去登录';
+
+		$scope.go = function (isLogin) {
+			if (isLogin) {
+				if ($scope.message != '已投递') {
+					$http.post('data/handle.json', {
+						id: $scope.position.id
+					})
+					.then(function (resp) {
+						var data = resp.data;
+						$log.log('handle result(): ', data);
+						$scope.message = '已投递';
+					});
+				} else {
+					console.log('请勿重复投递');
+				}
+			} else {	// 去登录
+				$state.go('login');
+			}
+		}
 
 		// position
 		function getPosition() {
@@ -346,7 +368,11 @@
 					positionId: positionId
 				}
 			}).then(function (resp) {
-				$scope.position = resp.data;
+				var data = resp.data;
+				$scope.position = data;
+				if (data.posted) {
+					$scope.message = '已投递';
+				}
 				def.resolve(resp);
 			}, function (err) {
 				def.reject(err);
@@ -377,6 +403,7 @@
 		});
 	}]);
 })();
+
 (function () {
     'use strict';
 
@@ -762,7 +789,7 @@ angular.module('app').filter('filterByObj', [function () {
 	'use strict';
 
 	// appHead,在html中对应app-position-info
-	angular.module('app').directive('appPositionInfo', [function () {
+	angular.module('app').directive('appPositionInfo', ['$http', function ($http) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -774,10 +801,23 @@ angular.module('app').filter('filterByObj', [function () {
 			},
 			link: function (scope, iElement, iAttrs) {
 				scope.imgPath = 'image/star'+(scope.isActive ? 'active' : '')+'.png';
+				scope.getInMyFavorite = function (item) {
+					$http.post('data/favorite.json', {
+						id: item.id,
+						select: item.select
+					})
+					.then(function (resp) {
+						var data = resp.data;
+						console.log('item: ', item);
+						scope.isActive = !scope.isActive;
+						scope.imgPath = 'image/star'+(scope.isActive ? '-active' : '')+'.png';
+					});
+				}
 			}
 		};
 	}]);
 })();
+
 (function () {
 	'use strict';
 
@@ -797,17 +837,18 @@ angular.module('app').filter('filterByObj', [function () {
 	'use strict';
 
 	// appHead,在html中对应app-head
-	angular.module('app').directive('appHead', [function () {
+	angular.module('app').directive('appHead', ['cache', function (cache) {
 		return {
 			restrict: 'A',
 			replace: true,
 			templateUrl: 'view/template/head.html',
 			link: function (scope, iElement, iAttrs) {
-				
+				scope.name = cache.get('name') || '';
 			}
 		};
 	}]);
 })();
+
 (function () {
 	'use strict';
 
@@ -837,7 +878,7 @@ angular.module('app').filter('filterByObj', [function () {
 	'use strict';
 
 	// appPositionList,在html中对应app-position-list
-	angular.module('app').directive('appPositionList', [function () {
+	angular.module('app').directive('appPositionList', ['$http', function ($http) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -846,11 +887,24 @@ angular.module('app').filter('filterByObj', [function () {
 			scope: {
 				data: '=',
 				filterObj: '=',
-				claz: '='
+				claz: '=',
+				isFavourite: '='
 			},
 			link: function (scope, iElement, iAttrs) {
 				// 处理自定义class,从接口中传入
 				scope.myClaz = iAttrs.claz || '';
+				if (iAttrs.isFavourite) {
+					// 组件内,搜藏点击事件
+					scope.select = function (item) {
+						$http.post('data/favorite.json', {
+							id: item.id,
+							select: !item.select
+						}).then(function (resp) {
+							var data = resp.data;
+							item.select = !item.select;
+						});
+					}
+				}
 			}
 		};
 	}]);

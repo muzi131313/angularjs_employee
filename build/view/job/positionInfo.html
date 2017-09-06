@@ -9,5 +9,8 @@
 		<span class="ml" ng-bind="position.education">专科</span>
 	</p>
 	<p ng-bind="position.benefit">成长空间大</p>
-	<img ng-show="isLogin" ng-src="{{imgPath}}" alt="" class="p-a star">
+	<img alt="" class="p-a star"
+		ng-show="isLogin"
+		ng-src="{{imgPath}}"
+		ng-click="getInMyFavorite(position)">
 </div>

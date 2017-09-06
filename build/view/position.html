@@ -1,5 +1,5 @@
 <div app-head-bar title="职位详情"></div>
-<div app-position-info position="position" isLogin="isLogin" isActive="isActive"></div>
+<div app-position-info position="position" is-login="isLogin" is-active="isActive"></div>
 <div app-company company="company"></div>
 
 <div class="bg-w job">
@@ -8,5 +8,7 @@
 岗位职责：
 1.销售产品
 </pre>
-<button class="bottom-btn c-w" ng-bind="isLogin ? '投个简历' : '去登录'"></button>
+<button class="bottom-btn c-w"
+    ng-bind="message"
+    ng-click="go(isLogin)"></button>
 </div>

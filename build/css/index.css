@@ -79,6 +79,20 @@
 .position-list .item .desc {
   margin: 0;
 }
+.position-list .item .icon {
+  width: 0.8rem;
+  height: 0.74666667rem;
+  right: 0;
+  top: 50%;
+  margin-top: -0.37333333rem;
+  margin-right: 0.32rem;
+}
+.position-list .item .star {
+  background: url(../image/star.png) no-repeat center center;
+}
+.position-list .item .star-active {
+  background: url(../image/star-active.png) no-repeat center center;
+}
 /** common */
 .bg-w {
   background-color: #fff;
