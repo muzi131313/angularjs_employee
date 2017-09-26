@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	angular.module('app', ['ui.router', 'ngCookies', 'validation']);
+	angular.module('app', ['ui.router', 'ngCookies', 'validation', 'ngAnimate']);
 })();
 
 (function () {
@@ -693,6 +693,98 @@ angular.module('app').filter('filterByObj', [function () {
 (function () {
 	'use strict';
 
+	// appFooter,在html中对应app-footer
+	angular.module('app').directive('appFooter', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/template/footer.html',
+			link: function (scope, iElement, iAttrs) {
+				
+			}
+		};
+	}]);
+})();
+(function () {
+	'use strict';
+
+	// appHead,在html中对应app-head
+	angular.module('app').directive('appHead', ['cache', function (cache) {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/template/head.html',
+			link: function (scope, iElement, iAttrs) {
+				scope.name = cache.get('name') || '';
+			}
+		};
+	}]);
+})();
+
+(function () {
+	'use strict';
+
+	// appHead,在html中对应app-head-bar
+	angular.module('app').directive('appHeadBar', [function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/template/headBar.html',
+			scope: {
+				title: '@'
+			},
+			link: function (scope, iElement, iAttrs) {
+				scope.back = function () {
+					window.history.back();	
+				};
+				
+				scope.$on('to-child', function (event, data) {
+					console.log('to-child', event, data);
+				});
+				scope.$emit('to-parent', {show: 'hai'});
+			}
+		};
+	}]);
+})();
+(function () {
+	'use strict';
+
+	// appPositionList,在html中对应app-position-list
+	angular.module('app').directive('appPositionList', ['$http', function ($http) {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'view/template/positionList.html',
+			// 修改scope,暴露data接口,降低模板和控制器之间的耦合
+			scope: {
+				data: '=',
+				filterObj: '=',
+				claz: '=',
+				isFavourite: '='
+			},
+			link: function (scope, iElement, iAttrs) {
+				// 处理自定义class,从接口中传入
+				scope.myClaz = iAttrs.claz || '';
+				if (iAttrs.isFavourite) {
+					// 组件内,搜藏点击事件
+					scope.select = function (item) {
+						$http.post('data/favorite.json', {
+							id: item.id,
+							select: !item.select
+						}).then(function (resp) {
+							var data = resp.data;
+							item.select = !item.select;
+						});
+					}
+				}
+			}
+		};
+	}]);
+})();
+
+(function () {
+	'use strict';
+
 	// appSheet,在html中对应app-sheet
 	angular.module('app').directive('appSheet', [function () {
 		return {
@@ -812,98 +904,6 @@ angular.module('app').filter('filterByObj', [function () {
 						scope.isActive = !scope.isActive;
 						scope.imgPath = 'image/star'+(scope.isActive ? '-active' : '')+'.png';
 					});
-				}
-			}
-		};
-	}]);
-})();
-
-(function () {
-	'use strict';
-
-	// appFooter,在html中对应app-footer
-	angular.module('app').directive('appFooter', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/template/footer.html',
-			link: function (scope, iElement, iAttrs) {
-				
-			}
-		};
-	}]);
-})();
-(function () {
-	'use strict';
-
-	// appHead,在html中对应app-head
-	angular.module('app').directive('appHead', ['cache', function (cache) {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/template/head.html',
-			link: function (scope, iElement, iAttrs) {
-				scope.name = cache.get('name') || '';
-			}
-		};
-	}]);
-})();
-
-(function () {
-	'use strict';
-
-	// appHead,在html中对应app-head-bar
-	angular.module('app').directive('appHeadBar', [function () {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/template/headBar.html',
-			scope: {
-				title: '@'
-			},
-			link: function (scope, iElement, iAttrs) {
-				scope.back = function () {
-					window.history.back();	
-				};
-				
-				scope.$on('to-child', function (event, data) {
-					console.log('to-child', event, data);
-				});
-				scope.$emit('to-parent', {show: 'hai'});
-			}
-		};
-	}]);
-})();
-(function () {
-	'use strict';
-
-	// appPositionList,在html中对应app-position-list
-	angular.module('app').directive('appPositionList', ['$http', function ($http) {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'view/template/positionList.html',
-			// 修改scope,暴露data接口,降低模板和控制器之间的耦合
-			scope: {
-				data: '=',
-				filterObj: '=',
-				claz: '=',
-				isFavourite: '='
-			},
-			link: function (scope, iElement, iAttrs) {
-				// 处理自定义class,从接口中传入
-				scope.myClaz = iAttrs.claz || '';
-				if (iAttrs.isFavourite) {
-					// 组件内,搜藏点击事件
-					scope.select = function (item) {
-						$http.post('data/favorite.json', {
-							id: item.id,
-							select: !item.select
-						}).then(function (resp) {
-							var data = resp.data;
-							item.select = !item.select;
-						});
-					}
 				}
 			}
 		};
